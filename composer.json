@@ -8,5 +8,10 @@
             "email": "thesirpr@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Suber": "./src"
+        }
+    }
 }
