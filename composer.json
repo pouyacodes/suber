@@ -1,0 +1,12 @@
+{
+    "name": "pouyacodes/suber",
+    "description": "Working with subtitles in php",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Pouya Rezvani",
+            "email": "thesirpr@gmail.com"
+        }
+    ],
+    "require": {}
+}
