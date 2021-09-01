@@ -2,8 +2,13 @@
 Working with subtitles in php
 
 # Installation
-1. First of all you must install [Composer](https://getcomposer.org/).
-2. Then run `composer require pouyacodes/suber`
+First of all you must install [Composer](https://getcomposer.org/).
+#### Installing via Composer
+run `composer require pouyacodes/suber`
+#### Installing with git
+1. Close this project `git clone https://github.com/pouyacodes/suber.git`
+2. run `composer dump-autoload`
+3. autoload classes.
 
 # Usage
 Here are a simple usage of this package:
@@ -20,7 +25,7 @@ foreach($subtitles as $subtitle) { // loop through it. In this example all subti
     $subtitle->setTo( $subtitle->getTo() + 0.5 );
 }
 
-$content = $parser->dump($subtitles); // Pass subtitle collection to get dump raw contents.
+$content = $parser->dump($subtitles); // Pass subtitle collection to dump method to get raw contents.
 file_put_contents("sample.fixed.srt", $content); // Save raw contents to file.
 
 
