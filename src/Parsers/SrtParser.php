@@ -43,16 +43,20 @@ class SrtParser implements ISubtitleType
         return $collection;
     }
 
-    public function dump(SubtitleCollection $collection) : string
+    public function dump($collection = []) : string
     {
         $subtitles = [];
 
         $counter = 1;
         foreach($collection as $subtitle) {
-            $text = implode(PHP_EOL, $subtitle->getTexts());
-            $time = sprintf( "%s --> %s", $this->toTimeRepersent($subtitle->getFrom()), $this->toTimeRepersent($subtitle->getTo()) );
-            $subtitles []= $counter . PHP_EOL . $time . PHP_EOL . $text . PHP_EOL;
-            $counter++;
+
+            if($subtitle instanceof Subtitle) {
+                $text = implode(PHP_EOL, $subtitle->getTexts());
+                $time = sprintf( "%s --> %s", $this->toTimeRepersent($subtitle->getFrom()), $this->toTimeRepersent($subtitle->getTo()) );
+                $subtitles []= $counter . PHP_EOL . $time . PHP_EOL . $text . PHP_EOL;
+                $counter++;
+            }
+
         }
 
         return trim(implode(PHP_EOL, $subtitles));
