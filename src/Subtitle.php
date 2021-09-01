@@ -14,7 +14,7 @@ class Subtitle
     {
         $this->setFrom($from);
         $this->setTo($to);
-        $this->setText($texts);
+        $this->setTexts($texts);
     }
 
     public function getFrom() : float
@@ -41,12 +41,12 @@ class Subtitle
         $this->to = $to;
     }
 
-    public function getText() : array
+    public function getTexts() : array
     {
         return $this->texts;
     }
 
-    public function setText($texts): void
+    public function setTexts($texts): void
     {
         $texts = is_string($texts) ? [$texts] : $texts;
         
