@@ -15,11 +15,14 @@ class SrtParser implements ISubtitleType
 
     public function parse(string $text) : SubtitleCollection
     {
+        // -------- remove the utf-8 BOM ----
+        $text = str_replace("\xEF\xBB\xBF", '', $text); 
         $lines = explode(PHP_EOL, $text);
         $collection = new SubtitleCollection;
         $currentSubtitle = null;
     
         foreach ($lines as $line) {
+
             if($line) {
 
                 if(ctype_digit($line)) {
@@ -30,7 +33,7 @@ class SrtParser implements ISubtitleType
                     $currentSubtitle->setFrom( $this->toUnixTimestamp($matches['from']) );
                     $currentSubtitle->setTo( $this->toUnixTimestamp($matches['to']) );
                 } else {
-                    $currentSubtitle->setText($line);
+                    $currentSubtitle->setTexts($line);
                 }
 
             }
@@ -46,7 +49,7 @@ class SrtParser implements ISubtitleType
 
         $counter = 1;
         foreach($collection as $subtitle) {
-            $text = implode(PHP_EOL, $subtitle->getText());
+            $text = implode(PHP_EOL, $subtitle->getTexts());
             $time = sprintf( "%s --> %s", $this->toTimeRepersent($subtitle->getFrom()), $this->toTimeRepersent($subtitle->getTo()) );
             $subtitles []= $counter . PHP_EOL . $time . PHP_EOL . $text . PHP_EOL;
             $counter++;
