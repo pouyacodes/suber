@@ -3,76 +3,56 @@
 namespace Suber;
 
 use Exception;
-use Suber\Exceptions\NaturalNumberException;
 
 class Subtitle
 {
-    private int $counter = 1;
-    private int $from = 0;
-    private int $to = 0;
-    private string $text = "";
+    private float $from = 0;
+    private float $to = 0;
+    private array $texts = [];
 
-    public function __construct(int $fromTimestamp, int $toTimestamp, string $text, int $counter = 1)
+    public function __construct(float $from, float $to, array $texts)
     {
-        $this->setCounter($counter);
-        $this->setFrom($fromTimestamp);
-        $this->setTo($toTimestamp);
-        $this->setText($text);
+        $this->setFrom($from);
+        $this->setTo($to);
+        $this->setText($texts);
     }
 
-    public function getCounter() : int
-    {
-        return $this->counter;
-    }
-
-    public function setCounter(int $counter) : void
-    {
-        if($counter <= 0)
-            throw new NaturalNumberException('$counter');
-        $this->counter = $counter;
-    }
-
-    public function getFrom() : int
+    public function getFrom() : float
     {
         return $this->from;
     }
 
-    public function setFrom(int $fromTimestamp) : void
+    public function setFrom(float $from) : void
     {
-        if($fromTimestamp < 0)
-            throw new NaturalNumberException('$fromTimestamp');
-        $this->from = $fromTimestamp;
+        if ($from < 0)
+            throw new Exception('$from seconds must be grader or equals than 0');
+        $this->from = $from;
     }
 
-    public function getTo() : int
+    public function getTo() : float
     {
         return $this->to;
     }
 
-    public function setTo(int $toTimestamp) : void
+    public function setTo(float $to) : void
     {
-        if($toTimestamp < 0)
-            throw new NaturalNumberException('$toTimestamp');
-        $this->to = $toTimestamp;
+        if ($to< 0)
+            throw new Exception('$to seconds must be grader or equals than 0');
+        $this->to = $to;
     }
 
-    public function getText() : string
+    public function getText() : array
     {
-        return $this->text;
+        return $this->texts;
     }
 
-    public function setText(string $text): void
+    public function setText($texts): void
     {
-        if(empty($text))
-            throw new Exception('$text must not be a empty text.');
+        $texts = is_string($texts) ? [$texts] : $texts;
         
-        $this->text = trim($text);
+        foreach($texts as $text) {
+            if(is_string($text))
+                $this->texts []= $text;
+        }
     }
-
-    public function __toString()
-    {
-        $formatedSubtitle = "";
-        return $formatedSubtitle;
-    }
-    
 }

@@ -2,23 +2,20 @@
 
 namespace Suber;
 
-use iterable;
 use Iterator;
 
 class SubtitleCollection implements Iterator
 {
     private array $collection = [];
-    private int $counter = 0;
+    private int $position = 0;
 
-    public function add($subtitle) : void
+    public function __construct()
     {
-        if(is_array($subtitle)) {
-            $counter = $subtitle['counter'] ?? ++$this->counter;
-            $from = $subtitle['from'];
-            $to = $subtitle['to'];
-            $text = $subtitle['text'];
-            $subtitle = new Subtitle($counter, $from, $to, $counter);
-        }
+        $this->position = 0;
+    }
+
+    public function add(Subtitle $subtitle) : void
+    {
         $this->collection []= $subtitle;
     }
 
@@ -31,26 +28,26 @@ class SubtitleCollection implements Iterator
 
     public function current()
     {
-        
+        return $this->collection[$this->position];
     }
 
     public function next()
     {
-        
+        $this->position++;
     }
 
     public function rewind()
     {
-        
+        $this->position = 0;
     }
 
     public function key()
     {
-        
+        return $this->position;
     }
 
     public function valid()
     {
-        
+        return isset($this->collection[$this->position]);
     }
 }
