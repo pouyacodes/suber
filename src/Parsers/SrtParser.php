@@ -2,6 +2,7 @@
 
 namespace Suber\Parsers;
 
+use Generator;
 use Suber\Parsers\ISubtitleType;
 use Suber\Subtitle;
 use Suber\SubtitleCollection;
@@ -43,6 +44,17 @@ class SrtParser implements ISubtitleType
         return $collection;
     }
 
+    public function dumpSingle($subtitle) : string
+    {
+        $result = '';
+        if($subtitle instanceof Subtitle) {
+            $text = implode(PHP_EOL, $subtitle->getTexts());
+            $time = sprintf("%s --> %s", $this->toTimeRepersent($subtitle->getFrom()), $this->toTimeRepersent($subtitle->getTo()) );
+            $result = $time . PHP_EOL . $text . PHP_EOL;
+        }
+        return $result;
+    }
+
     public function dump($collection = []) : string
     {
         $subtitles = [];
@@ -50,16 +62,27 @@ class SrtParser implements ISubtitleType
         $counter = 1;
         foreach($collection as $subtitle) {
 
-            if($subtitle instanceof Subtitle) {
-                $text = implode(PHP_EOL, $subtitle->getTexts());
-                $time = sprintf( "%s --> %s", $this->toTimeRepersent($subtitle->getFrom()), $this->toTimeRepersent($subtitle->getTo()) );
-                $subtitles []= $counter . PHP_EOL . $time . PHP_EOL . $text . PHP_EOL;
+            $result = $this->dumpSingle($subtitle);
+            if ($result) {
+                $subtitles []= $counter . PHP_EOL . $result;
                 $counter++;
             }
-
         }
 
         return trim(implode(PHP_EOL, $subtitles));
+    }
+
+    public function dumpGenerator($collection = []) : Generator
+    {
+        $counter = 1;
+        foreach($collection as $subtitle) {
+
+            $result = $this->dumpSingle($subtitle);
+            if ($result) {
+                yield $counter . PHP_EOL . $result;
+                $counter++;
+            }
+        }
     }
 
     private function toUnixTimestamp(string $timeString) 
