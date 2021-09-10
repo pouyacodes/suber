@@ -29,12 +29,11 @@ class SrtParser implements ISubtitleType
                 if(ctype_digit($line)) {
                     $currentSubtitle = new Subtitle(0, 0, []);
                     $collection->add($currentSubtitle);
-                }
-                else if(preg_match("/^(?<from>.+?) --> (?<to>.+?)$/", $line, $matches)) {
-                    $currentSubtitle->setFrom( $this->toUnixTimestamp($matches['from']) );
-                    $currentSubtitle->setTo( $this->toUnixTimestamp($matches['to']) );
-                } else {
-                    $currentSubtitle->setTexts($line);
+                } else if(preg_match("/^(?<from>.+?) --> (?<to>.+?)$/", $line, $matches)) {
+                    $currentSubtitle && $currentSubtitle->setFrom( $this->toUnixTimestamp($matches['from']) );
+                    $currentSubtitle && $currentSubtitle->setTo( $this->toUnixTimestamp($matches['to']) );
+                }  else {
+                    $currentSubtitle && $currentSubtitle->setTexts($line);
                 }
 
             }
